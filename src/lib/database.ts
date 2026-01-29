@@ -268,7 +268,8 @@ export async function testDatabaseConnectivity(): Promise<boolean> {
       // Clean up test key
       await kv.del(testKey);
       
-      return result === testValue;
+      // Convert result to string for comparison since KV might return different types
+      return String(result) === testValue;
     })();
     
     return await Promise.race([testPromise, timeoutPromise]);
