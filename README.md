@@ -1,26 +1,26 @@
 # Pastebin-Lite
 
-A simple, fast, and secure pastebin application built with Next.js and Vercel KV.
+A simple, fast, and secure pastebin application built with Next.js. Create and share text pastes with optional expiration times and view limits.
 
 ## Features
 
-- 📝 Create text pastes with unique URLs
-- ⏰ Optional time-based expiry (TTL)
-- 👁️ Optional view count limits
-- 🔒 XSS protection and input validation
-- 🚀 Serverless architecture with Vercel
-- 💾 Redis-based storage with Vercel KV
+- Create text pastes with unique URLs
+- Optional time-based expiry (TTL) with real-time countdown
+- Optional view count limits
+- XSS protection and input validation
+- Serverless architecture optimized for Vercel
+- Real-time expiration counter with client-side persistence
 
-## Quick Start
+## Running Locally
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18 or higher
 - Vercel account with KV database
 
 ### Environment Setup
 
-Create a `.env.local` file:
+Create a `.env.local` file in the project root:
 
 ```bash
 KV_REST_API_URL=your_vercel_kv_rest_api_url
@@ -35,41 +35,37 @@ npm install
 
 # Run development server
 npm run dev
-
-# Build for production
-npm run build
 ```
 
-### Deployment
+The application will be available at `http://localhost:3000`.
 
-Deploy to Vercel:
+### Building for Production
 
-1. Push to GitHub
-2. Import project in Vercel Dashboard
-3. Add environment variables
-4. Deploy!
+```bash
+# Build the application
+npm run build
+
+# Start production server
+npm start
+```
+
+## Persistence Layer
+
+This application uses **Vercel KV** (Redis) as its persistence layer. Vercel KV provides:
+
+- Fast key-value storage with Redis compatibility
+- Automatic TTL (time-to-live) support for paste expiration
+- Atomic operations for view count management
+- Built-in replication and high availability
+- Serverless-optimized connection pooling
+
+All paste data is stored as JSON objects in Redis with automatic expiration handling. The database layer includes retry logic and error handling for production reliability.
 
 ## API Endpoints
 
-- `GET /api/healthz` - Health check
-- `POST /api/pastes` - Create paste
-- `GET /api/pastes/[id]` - Retrieve paste
-
-## Usage
-
-### Create a Paste
-
-```bash
-curl -X POST http://localhost:3000/api/pastes \
-  -H "Content-Type: application/json" \
-  -d '{"content":"Hello World","ttl_seconds":3600,"max_views":10}'
-```
-
-### Retrieve a Paste
-
-```bash
-curl http://localhost:3000/api/pastes/[paste-id]
-```
+- `GET /api/healthz` - Health check endpoint
+- `POST /api/pastes` - Create a new paste
+- `GET /api/pastes/[id]` - Retrieve a paste by ID
 
 ## License
 
