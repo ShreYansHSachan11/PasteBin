@@ -274,7 +274,8 @@ export async function retrievePasteById(
       data: {
         content: updatedPaste.content,
         remaining_views: remainingViews,
-        expires_at: expiresAt
+        expires_at: expiresAt,
+        server_time: new Date(getCurrentTime()).toISOString()
       }
     };
     

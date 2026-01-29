@@ -72,7 +72,7 @@ export interface CreatePasteResponse {
 
 /**
  * Response for successful paste retrieval (GET /api/pastes/[id])
- * Requirements: 3.2
+ * Requirements: 3.2, 4.1
  */
 export interface GetPasteResponse {
   /** The paste text content */
@@ -83,6 +83,9 @@ export interface GetPasteResponse {
   
   /** ISO 8601 timestamp when paste expires (null if no TTL) */
   expires_at: string | null;
+  
+  /** ISO 8601 current server time for client synchronization */
+  server_time: string;
 }
 
 /**

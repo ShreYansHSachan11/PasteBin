@@ -8,8 +8,9 @@
  * - Proper HTML escaping for XSS prevention
  * - 404 handling for unavailable pastes
  * - Readable HTML layout for paste content
+ * - Client-side expiration handling with content hiding
  * 
- * Requirements: 4.1, 4.2, 4.3, 4.4
+ * Requirements: 4.1, 4.2, 4.3, 4.4, 1.2, 3.1, 3.5
  */
 
 import { notFound } from 'next/navigation';
@@ -17,6 +18,8 @@ import { headers } from 'next/headers';
 import { retrievePasteById } from '@/lib/paste-service';
 import { isValidPasteId } from '@/lib/paste-service';
 import Link from 'next/link';
+import ExpirationCounter from '@/components/ExpirationCounter';
+import PasteContent from '@/components/PasteContent';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -53,7 +56,7 @@ export default async function PastePage({ params }: PageProps) {
     notFound();
   }
   
-  const { content, remaining_views, expires_at } = result.data;
+  const { content, remaining_views, expires_at, server_time } = result.data;
   
   // Format expiry date for display
   const expiryDisplay = expires_at 
@@ -75,16 +78,22 @@ export default async function PastePage({ params }: PageProps) {
               <div>Expires at: <span className="font-semibold">{expiryDisplay}</span></div>
             )}
           </div>
+          
+          {/* Expiration Counter - positioned prominently near metadata */}
+          {expires_at && server_time && (
+            <ExpirationCounter 
+              expiresAt={expires_at}
+              serverTime={server_time}
+            />
+          )}
         </header>
         
-        {/* Paste Content */}
-        <main>
-          <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-            <pre className="whitespace-pre-wrap break-words font-mono text-sm leading-relaxed overflow-x-auto">
-              {content}
-            </pre>
-          </div>
-        </main>
+        {/* Paste Content with Client-Side Expiration Handling */}
+        <PasteContent 
+          content={content}
+          pasteId={id}
+          hasTtl={!!expires_at}
+        />
         
         {/* Footer */}
         <footer className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">

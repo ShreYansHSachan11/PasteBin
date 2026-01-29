@@ -24,3 +24,215 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* ============================================================================
+   ExpirationCounter Component Styles
+   ============================================================================ */
+
+.expiration-counter {
+  margin: 1rem 0;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Active countdown state */
+.expiration-counter.active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Expired state */
+.expiration-counter.expired {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Countdown display container */
+.countdown-display {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Countdown time styling with enhanced monospace */
+.countdown-time {
+  font-feature-settings: 'tnum' 1, 'kern' 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  min-width: fit-content;
+}
+
+/* Dark mode text shadow adjustment */
+@media (prefers-color-scheme: dark) {
+  .countdown-time {
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Countdown label styling */
+.countdown-label {
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+/* Expiration message styling */
+.expiration-message {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Expired text with enhanced styling */
+.expired-text {
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+/* New paste link with enhanced hover effects */
+.new-paste-link {
+  transition: all 0.2s ease-in-out;
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.new-paste-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.new-paste-link:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive breakpoints */
+@media (max-width: 640px) {
+  .expiration-counter {
+    margin: 0.75rem 0;
+  }
+  
+  .countdown-display {
+    padding: 0.75rem !important;
+  }
+  
+  .countdown-time {
+    font-size: 1rem !important;
+    letter-spacing: 0.025em;
+  }
+  
+  .countdown-label {
+    font-size: 0.75rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .countdown-display {
+    padding: 0.5rem !important;
+  }
+  
+  .countdown-time {
+    font-size: 0.875rem !important;
+  }
+}
+
+/* Animation keyframes */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Urgency-specific animations */
+.countdown-time[data-urgency="warning"] {
+  animation: warningPulse 2s ease-in-out infinite;
+}
+
+.countdown-time[data-urgency="critical"] {
+  animation: criticalPulse 1s ease-in-out infinite;
+}
+
+@keyframes warningPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes criticalPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .countdown-time {
+    text-shadow: none;
+    font-weight: 800;
+  }
+  
+  .expiration-counter.active .countdown-display {
+    border-width: 2px;
+  }
+  
+  .expiration-counter.expired .expiration-message {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .expiration-counter,
+  .countdown-display,
+  .expiration-message,
+  .new-paste-link {
+    transition: none;
+    animation: none;
+  }
+  
+  .countdown-time[data-urgency="warning"],
+  .countdown-time[data-urgency="critical"] {
+    animation: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .expiration-counter {
+    break-inside: avoid;
+    margin: 0.5rem 0;
+  }
+  
+  .countdown-display,
+  .expiration-message {
+    border: 1px solid #000;
+    box-shadow: none;
+  }
+  
+  .new-paste-link {
+    color: #000 !important;
+    text-decoration: underline;
+  }
+}
