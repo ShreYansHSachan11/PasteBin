@@ -1,12 +1,6 @@
 {
   "version": 2,
   "name": "pastebin-lite",
-  "builds": [
-    {
-      "src": "next.config.ts",
-      "use": "@vercel/next"
-    }
-  ],
   "env": {
     "TEST_MODE": "0"
   },
