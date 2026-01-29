@@ -61,12 +61,11 @@ This application uses **Vercel KV** (Redis) as its persistence layer. Vercel KV 
 
 All paste data is stored as JSON objects in Redis with automatic expiration handling. The database layer includes retry logic and error handling for production reliability.
 
-## API Endpoints
+## Application Endpoints
+
+The application provides these REST endpoints:
 
 - `GET /api/healthz` - Health check endpoint
 - `POST /api/pastes` - Create a new paste
 - `GET /api/pastes/[id]` - Retrieve a paste by ID
 
-## License
-
-MIT
